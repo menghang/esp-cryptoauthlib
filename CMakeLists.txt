@@ -16,6 +16,7 @@ set(COMPONENT_SRCDIRS       "${CRYPTOAUTHLIB_DIR}/atcacert"
 
 set(COMPONENT_SRCS          "${COMPONENT_DIR}/cryptoauthlib/lib/hal/atca_hal.c"
                             "${COMPONENT_DIR}/cryptoauthlib/lib/hal/hal_freertos.c"
+                            "${COMPONENT_DIR}/cryptoauthlib/third_party/atca_mbedtls_patch.c"
                             "${COMPONENT_DIR}/cryptoauthlib/third_party/hal/esp32/hal_esp32_i2c.c"
                             "${COMPONENT_DIR}/cryptoauthlib/third_party/hal/esp32/hal_esp32_timer.c"
                             )
@@ -23,6 +24,8 @@ set(COMPONENT_SRCS          "${COMPONENT_DIR}/cryptoauthlib/lib/hal/atca_hal.c"
 set(COMPONENT_INCLUDEDIRS   "${CRYPTOAUTHLIB_DIR}/"
                             "${CRYPTOAUTHLIB_DIR}/hal"
                             "${CRYPTOAUTHLIB_DIR}/../app/tng"
+                            "${COMPONENT_DIR}/cryptoauthlib/third_party"
+                            "${COMPONENT_DIR}/cryptoauthlib/third_party/hal/esp32/"
                             "port"
                             )
 
@@ -40,7 +43,7 @@ idf_component_register(     SRC_DIRS        "${COMPONENT_SRCDIRS}"
 
 target_sources(${COMPONENT_LIB} PRIVATE ${COMPONENT_SRCS})
 target_compile_definitions(${COMPONENT_LIB} PRIVATE ${COMPONENT_CFLAGS})
-target_compile_options(${COMPONENT_LIB} PRIVATE -Wno-pointer-sign)
+target_compile_options(${COMPONENT_LIB} PRIVATE -Wno-pointer-sign -Wno-nonnull)
 
 idf_component_get_property(freertos_dir freertos COMPONENT_DIR)
 set_source_files_properties(${CRYPTOAUTHLIB_DIR}/hal/hal_freertos.c PROPERTIES COMPILE_FLAGS -I${freertos_dir}/include/freertos)

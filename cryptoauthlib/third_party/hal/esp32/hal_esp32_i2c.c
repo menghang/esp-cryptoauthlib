@@ -20,8 +20,8 @@
 #include "esp_log.h"
 #include "cryptoauthlib.h"
 
-#define I2C0_SDA_PIN                       CONFIG_ATCA_I2C_SDA_PIN
-#define I2C0_SCL_PIN                       CONFIG_ATCA_I2C_SCL_PIN
+static uint8_t I2C0_SDA_PIN = CONFIG_ATCA_I2C_SDA_PIN;
+static uint8_t I2C0_SCL_PIN = CONFIG_ATCA_I2C_SCL_PIN;
 
 #define I2C1_SDA_PIN                       21
 #define I2C1_SCL_PIN                       22
@@ -35,6 +35,12 @@
 #endif
 
 #define MAX_I2C_BUSES 2  //ESP32 has 2 I2C bus
+
+void hal_esp32_i2c0_set_pin_config(uint8_t sda_pin, uint8_t scl_pin)
+{
+    I2C0_SDA_PIN = sda_pin;
+    I2C0_SCL_PIN = scl_pin;
+}
 
 typedef struct atcaI2Cmaster
 {
