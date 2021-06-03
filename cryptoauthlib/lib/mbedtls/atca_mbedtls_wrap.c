@@ -71,6 +71,15 @@ int atcac_sw_random(uint8_t* data, size_t data_size)
     return mbedtls_ctr_drbg_random(mbedtls_entropy_func, data, data_size);
 }
 
+int mbedtls_atca_get_random( void *p_rng,
+                            unsigned char *output,
+                            size_t output_size )
+{
+
+    (void) p_rng;
+    return atcac_sw_random( output, output_size );
+}
+
 
 /** \brief Update the GCM context with additional authentication data (AAD)
  *
@@ -731,7 +740,7 @@ ATCA_STATUS atcac_pk_sign(
             mbedtls_mpi_init(&s);
 
             //ret = mbedtls_ecdsa_sign(&mbedtls_pk_ec(*ctx)->grp, &r, &s, &mbedtls_pk_ec(*ctx)->d, digest, dig_len, NULL, NULL);
-            ret = mbedtls_ecdsa_sign_det(&mbedtls_pk_ec(*ctx)->grp, &r, &s, &mbedtls_pk_ec(*ctx)->d, digest, dig_len, MBEDTLS_MD_SHA256);
+            ret = mbedtls_ecdsa_sign_det_ext(&mbedtls_pk_ec(*ctx)->grp, &r, &s, &mbedtls_pk_ec(*ctx)->d, digest, dig_len, MBEDTLS_MD_SHA256, mbedtls_atca_get_random, NULL);
 
             if (!ret)
             {
