@@ -130,18 +130,18 @@ int mbedtls_ecdsa_verify(mbedtls_ecp_group *grp,
         ret = mbedtls_mpi_write_binary(s, &raw_sig[ATCA_SIG_SIZE / 2], ATCA_SIG_SIZE / 2);
     }
 
-    if (Q->Z.n == 1)
+    if (Q->MBEDTLS_PRIVATE(Z).MBEDTLS_PRIVATE(n) == 1)
     {
         uint8_t public_key[ATCA_PUB_KEY_SIZE];
 
         /* Convert the public key to it's uncompressed binary */
         if (!ret)
         {
-            ret = mbedtls_mpi_write_binary(&(Q->X), public_key, ATCA_PUB_KEY_SIZE / 2);
+            ret = mbedtls_mpi_write_binary(&(Q->MBEDTLS_PRIVATE(X)), public_key, ATCA_PUB_KEY_SIZE / 2);
         }
         if (!ret)
         {
-            ret = mbedtls_mpi_write_binary(&(Q->Y), &public_key[ATCA_PUB_KEY_SIZE / 2], ATCA_PUB_KEY_SIZE / 2);
+            ret = mbedtls_mpi_write_binary(&(Q->MBEDTLS_PRIVATE(Y)), &public_key[ATCA_PUB_KEY_SIZE / 2], ATCA_PUB_KEY_SIZE / 2);
         }
 
         if (!ret)
@@ -159,7 +159,7 @@ int mbedtls_ecdsa_verify(mbedtls_ecp_group *grp,
         atca_mbedtls_eckey_t key_info;
         if (!ret)
         {
-            ret = mbedtls_mpi_write_binary(&Q->Z, (unsigned char*)&key_info, sizeof(atca_mbedtls_eckey_t));
+            ret = mbedtls_mpi_write_binary(&Q->MBEDTLS_PRIVATE(Z), (unsigned char*)&key_info, sizeof(atca_mbedtls_eckey_t));
         }
 
         if (!ret)
